@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:https="http://www.mulesoft.org/schema/mule/https" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
+http://www.mulesoft.org/schema/mule/https http://www.mulesoft.org/schema/mule/https/current/mule-https.xsd">
+    <http:listener-config name="HTTPs_Listener_Configuration1" protocol="HTTPS" host="0.0.0.0" port="${https.port}" doc:name="HTTP Listener Configuration">
+        <tls:context>
+            <tls:key-store type="jks" path="${keystore.path}" keyPassword="${keystore.password}" password="${keystore.password}"/>
+        </tls:context>
+    </http:listener-config>
+    <http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="${http.port}" doc:name="HTTP Listener Configuration" protocol="HTTPS">
+        <tls:context>
+            <tls:key-store type="jks" path="${tls.path.filename}" alias="${tls.alias}" keyPassword="${tls.password}" password="${tls.password}"/>
+        </tls:context>
+    </http:listener-config>
+    <https:connector name="HTTP_HTTPS" enableCookies="true" cookieSpec="netscape" validateConnections="true" sendBufferSize="0" receiveBufferSize="0" receiveBacklog="0" clientSoTimeout="10000" serverSoTimeout="10000" socketSoLinger="0" doc:name="HTTP-HTTPS">
+        <https:tls-key-store path="${keystore.path}" keyPassword="${keystore.password}" storePassword="${keystore.password}"/>
+    </https:connector>
+     
+  
+    <flow name="cloudhub-helloworld-httpsFlow1" >
+        <http:listener config-ref="HTTPs_Listener_Configuration1" path="/hello" doc:name="HTTPs"/>
+    
+        <set-payload value="#['Hello HTTPs Secure CloudHub - Have a lovely day!']" doc:name="Set Payload"/>
+        <logger level="INFO" doc:name="Logger"/>
+        <echo-component doc:name="Echo"/>
+  
+    </flow>
+   
+</mule>
