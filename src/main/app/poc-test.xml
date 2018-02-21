@@ -22,9 +22,12 @@ http://www.mulesoft.org/schema/mule/https http://www.mulesoft.org/schema/mule/ht
         <https:tls-key-store path="${keystore.path}" keyPassword="${keystore.password}" storePassword="${keystore.password}"/>
     </https:connector>
      
+     
+     
   
     <flow name="cloudhub-helloworld-httpsFlow1" >
         <http:listener config-ref="HTTPs_Listener_Configuration1" path="/hello" doc:name="HTTPs"/>
+        <logger message="Start has been started.." level="INFO" doc:name="Logger"/>
     
         <set-payload value="#['Hello HTTPs Secure CloudHub - Have a lovely day!']" doc:name="Set Payload"/>
         <logger level="INFO" doc:name="Logger"/>
